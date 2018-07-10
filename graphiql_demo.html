@@ -1,0 +1,90 @@
+<html>
+<h1>GraphiQL Demo_Trump Tweet</h1>
+<h4>Time: <span id='clock'></span></h4> 
+<script type="text/javascript">  
+  //write the js code, assign the query uinto the variable (ES6) 
+const tweet = `
+    {
+  allFruits {
+    edges {
+      node {
+        text
+        date
+        favorites
+        retweets
+        tweetId
+      }
+    }
+  }
+}
+`;
+
+const keywords= `
+{
+  allKeywordtests {
+    edges {
+      node {
+        keyword
+        keywordCount
+      }
+    }
+  }
+}
+`
+
+/*fetch('http://localhost:5000/graphql', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ query: tweet }), 
+})
+  .then(res => res.json())
+  .then(res => {
+    console.log(res.data); 
+    document.getElementById('fruit').innerText = JSON.stringify(res.data, null, 4).replace(/\"([^(\")"]+)\":/g,"$1:"); 
+  }); */ 
+
+  fetch('http://localhost:5000/graphql', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ query: keywords }), 
+})
+  .then(res => res.json())
+  .then(res => {
+
+    let nodes = res.data.allKeywordtests.edges.reduce((acc, nxt, i ) => {
+      //let nodeArray = nxt.map(edge => edge.nodes) 
+      return [...acc, nxt.node]
+    },[]); 
+
+    document.getElementById('tweet').innerText = JSON.stringify(res.data, null, 4).replace(/\"([^(\")"]+)\":/g,"$1:"); 
+    let data = '';
+    
+    nodes.forEach(node=> {
+      data += `<div><tr><th>${node.keyword}
+      </th><th>${node.keywordCount}
+      </th></tr></div>`;  
+    })
+
+    document.getElementById('tweet').innerHTML= '<div>'+data+'</div>'; 
+    
+  })
+
+/*fetch('http://localhost:5000/graphql', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ query: cpy }), 
+})
+  .then(res => res.json())
+  .then(res => {
+    console.log(res.data);
+    document.getElementById('companies').innerText = JSON.stringify(res.data, null, 4);
+  }); */ 
+</script>   
+<body>
+  <pre>
+  <div id="tweet">
+    
+  </div>  
+  </pre>
+</body>
+</html> 
