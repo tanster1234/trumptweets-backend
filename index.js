@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({
 // app.use(express.static(__dirname + '/public'));
 
 
-app.listen(8082, () => {
-  console.log('app listening on 8082')
+app.listen(process.env.port, () => {
+  console.log(`app listening on ${process.env.port}` )
 });
 
