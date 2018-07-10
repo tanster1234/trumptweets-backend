@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Graph QL Demo</title>
+  
+<script>
+  const allAmericas = `{
+  allKeywordtests {
+    edges {
+      node {
+        keyword
+        keywordCount
+      }
+    }
+  }
+}
+
+`;
+
+
+fetch('http://localhost:5000/graphql', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ query: allAmericas }),
+})
+  .then(res => res.json())
+  .then(res => {console.log(res.data);
+  document.getElementById('allAmericas').innerText= JSON.stringify(res.data, null,4); 
+});    
+
+
+
+</script>
+
+
+<body>
+  <h>hello</h>
+  <div id = "allAmericas"><h1>"This is my allAmericas database"</h1></div>
+</body>
+</html>
